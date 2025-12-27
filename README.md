@@ -414,3 +414,9 @@ docker compose up -d wallabag
 ```
 
 Now you can login and test!
+
+## License
+
+You can check the [License](LICENSE) for specifics, but this is basically an MIT License for all people.
+
+There is an exception explicitly made for the Wallabag developers, or when a PR is accepted by the official Wallabag project that was made by any developer. This removes the need to include any attribution to me or this repo, and removes the need to include this license, just to keep things clean. The "no liability and no warranty" portion still applies to me, of course. Can't be too careful these days, even when you want to do a good thing.
