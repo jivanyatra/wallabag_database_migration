@@ -270,12 +270,10 @@ So, to summarize migrating from sqlite to another db (and in my case, postgresql
 2. Get your wallabag instance to fill the empty db with the required schema.
 ```
 docker compose up -d wallabag_service_name
-docker exec -it wallabag_docker_container_name sh
-> bin/console wallabag:install --env=prod --no-interaction
+docker exec -it wallabag_docker_container_name bin/console wallabag:install --env=prod --no-interaction
 # if you're using postgres, you're done
 # if you're using mysql or mariadb, do:
-> bin/console doctrine:migrations:migrate --env=prod --no-interaction
-exit
+docker exec -it wallabag_docker_container_name bin/console doctrine:migrations:migrate --env=prod --no-interaction
 docker compose down wallabag_service_name
 ```
   * Depending on your permissions or docker/OS setup, you may need to do a `sudo chown -R nobody:nogroup path/to/wallabag_data_dir` for wallabag to properly see/access its own data files. I did.
@@ -316,9 +314,7 @@ docker compose up -d postgres
 # start other containers
 docker compose up -d
 # install default tables into database
-docker exec -it wallabag sh
-bin/console wallabag:install --env=prod --no-interaction
-exit
+docker exec -it wallabag bin/console wallabag:install --env=prod --no-interaction
 # bring wallabag down to fix permissions on its data folder
 docker compose down wallabag
 sudo chown -R nobody:nogroup wallabag_data/
