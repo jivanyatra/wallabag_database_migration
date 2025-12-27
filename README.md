@@ -306,6 +306,9 @@ You can model things from my [docker-compose.yml](docker-compose.yml) file. It h
 * postgres
 * redis (cache for bulk imports)
 * adminer, a tool to visually confirm/edit your database (useful during debugging, and optional)
+
+If you want to use it, though, remember to create a [.env modeled off of my example](example.env).
+
 ```bash
 # assuming new directory
 # give postgres a chance to init
