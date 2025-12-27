@@ -1,0 +1,51 @@
+services:
+  wallabag:
+    container_name: wallabag
+    image: wallabag/wallabag:2.6.14
+    restart: unless-stopped
+    env_file:
+      - ".env"
+    ports:
+      - 8080:80
+    volumes:
+      - ./wallabag_data:/var/www/wallabag/data
+      - ./images:/var/www/wallabag/web/assets/images
+    depends_on:
+      - postgres
+      - redis
+
+  postgres:
+    container_name: postgres
+    image: postgres:18.1-alpine3.23
+    shm_size: 512mb
+    restart: unless-stopped
+    volumes:
+      - ./db_data:/var/lib/postgresql/18/docker
+    ports:
+    # 54322 is the port to use this externally, but 5432 is what's used inside the docker network between the containers
+      - 54322:5432
+    environment:
+      POSTGRES_USER: ${SYMFONY__ENV__DATABASE_USER}
+      POSTGRES_PASSWORD: ${SYMFONY__ENV__DATABASE_PASSWORD}
+    healthcheck:
+      test: ["CMD", "pg_isready", "-U", "wallabag"]
+      interval: 10s
+      start_period: 30s
+  # tool for visually inspecting and editing databases. uncomment to use for troubleshooting/testing
+  #adminer:
+  #  container_name: db_viewer
+  #  image: adminer
+  #  restart: unless-stopped
+  #  depends_on:
+  #    - postgres
+  #  ports:
+  #    - 8081:8080
+
+  redis:
+    container_name: redis
+    image: redis:alpine
+    healthcheck:
+      test: ["CMD", "redis-cli", "ping"]
+      interval: 20s
+      timeout: 5s
+
