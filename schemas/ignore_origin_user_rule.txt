@@ -1,0 +1,13 @@
+                                                                Table "public.wallabag_ignore_origin_user_rule"
+  Column   |          Type          | Collation | Nullable |                           Default                            | Storage  | Compression | Stats target | Description 
+-----------+------------------------+-----------+----------+--------------------------------------------------------------+----------+-------------+--------------+-------------
+ id        | integer                |           | not null | nextval('wallabag_ignore_origin_user_rule_id_seq'::regclass) | plain    |             |              | 
+ config_id | integer                |           | not null |                                                              | plain    |             |              | 
+ rule      | character varying(255) |           | not null |                                                              | extended |             |              | 
+Indexes:
+    "wallabag_ignore_origin_user_rule_pkey" PRIMARY KEY, btree (id)
+    "idx_config" btree (config_id)
+Foreign-key constraints:
+    "fk_config" FOREIGN KEY (config_id) REFERENCES wallabag_config(id)
+Access method: heap
+

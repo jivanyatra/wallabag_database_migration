@@ -1,0 +1,38 @@
+                                                                          Table "public.wallabag_user"
+          Column           |              Type              | Collation | Nullable |              Default              | Storage  | Compression | Stats target |   Description   
+---------------------------+--------------------------------+-----------+----------+-----------------------------------+----------+-------------+--------------+-----------------
+ id                        | integer                        |           | not null |                                   | plain    |             |              | 
+ username                  | character varying(180)         |           | not null |                                   | extended |             |              | 
+ username_canonical        | character varying(180)         |           | not null |                                   | extended |             |              | 
+ email                     | character varying(180)         |           | not null |                                   | extended |             |              | 
+ email_canonical           | character varying(180)         |           | not null |                                   | extended |             |              | 
+ enabled                   | boolean                        |           | not null |                                   | plain    |             |              | 
+ salt                      | character varying(255)         |           | not null |                                   | extended |             |              | 
+ password                  | character varying(255)         |           | not null |                                   | extended |             |              | 
+ last_login                | timestamp(0) without time zone |           |          | NULL::timestamp without time zone | plain    |             |              | 
+ confirmation_token        | character varying(255)         |           |          | NULL::character varying           | extended |             |              | 
+ password_requested_at     | timestamp(0) without time zone |           |          | NULL::timestamp without time zone | plain    |             |              | 
+ roles                     | text                           |           | not null |                                   | extended |             |              | (DC2Type:array)
+ name                      | text                           |           |          |                                   | extended |             |              | 
+ created_at                | timestamp(0) without time zone |           | not null |                                   | plain    |             |              | 
+ updated_at                | timestamp(0) without time zone |           | not null |                                   | plain    |             |              | 
+ authcode                  | integer                        |           |          |                                   | plain    |             |              | 
+ emailtwofactor            | boolean                        |           | not null |                                   | plain    |             |              | 
+ googleauthenticatorsecret | character varying(191)         |           |          | NULL::character varying           | extended |             |              | 
+ backupcodes               | json                           |           |          |                                   | extended |             |              | 
+Indexes:
+    "wallabag_user_pkey" PRIMARY KEY, btree (id)
+    "uniq_1d63e7e592fc23a8" UNIQUE, btree (username_canonical)
+    "uniq_1d63e7e5a0d96fbf" UNIQUE, btree (email_canonical)
+    "uniq_1d63e7e5c05fb297" UNIQUE, btree (confirmation_token)
+Referenced by:
+    TABLE "wallabag_oauth2_refresh_tokens" CONSTRAINT "fk_20c9fb24a76ed395" FOREIGN KEY (user_id) REFERENCES wallabag_user(id) ON DELETE CASCADE
+    TABLE "wallabag_oauth2_access_tokens" CONSTRAINT "fk_368a4209a76ed395" FOREIGN KEY (user_id) REFERENCES wallabag_user(id) ON DELETE CASCADE
+    TABLE "wallabag_oauth2_clients" CONSTRAINT "fk_635d765ea76ed395" FOREIGN KEY (user_id) REFERENCES wallabag_user(id)
+    TABLE "wallabag_config" CONSTRAINT "fk_87e64c53a76ed395" FOREIGN KEY (user_id) REFERENCES wallabag_user(id)
+    TABLE "wallabag_annotation" CONSTRAINT "fk_a7aed006a76ed395" FOREIGN KEY (user_id) REFERENCES wallabag_user(id)
+    TABLE "wallabag_oauth2_auth_codes" CONSTRAINT "fk_ee52e3faa76ed395" FOREIGN KEY (user_id) REFERENCES wallabag_user(id) ON DELETE CASCADE
+    TABLE "wallabag_entry" CONSTRAINT "fk_f4d18282a76ed395" FOREIGN KEY (user_id) REFERENCES wallabag_user(id)
+    TABLE "wallabag_site_credential" CONSTRAINT "fk_user" FOREIGN KEY (user_id) REFERENCES wallabag_user(id)
+Access method: heap
+

@@ -1,0 +1,25 @@
+                                                           Table "public.wallabag_config"
+       Column        |          Type          | Collation | Nullable |         Default         | Storage  | Compression | Stats target | Description 
+---------------------+------------------------+-----------+----------+-------------------------+----------+-------------+--------------+-------------
+ id                  | integer                |           | not null |                         | plain    |             |              | 
+ user_id             | integer                |           |          |                         | plain    |             |              | 
+ items_per_page      | integer                |           | not null |                         | plain    |             |              | 
+ language            | character varying(255) |           | not null |                         | extended |             |              | 
+ feed_token          | character varying(255) |           |          | NULL::character varying | extended |             |              | 
+ feed_limit          | integer                |           |          |                         | plain    |             |              | 
+ reading_speed       | double precision       |           |          |                         | plain    |             |              | 
+ pocket_consumer_key | character varying(255) |           |          | NULL::character varying | extended |             |              | 
+ action_mark_as_read | integer                |           |          | 0                       | plain    |             |              | 
+ list_mode           | integer                |           |          |                         | plain    |             |              | 
+ display_thumbnails  | integer                |           |          | 1                       | plain    |             |              | 
+Indexes:
+    "wallabag_config_pkey" PRIMARY KEY, btree (id)
+    "config_feed_token" btree (feed_token)
+    "uniq_87e64c53a76ed395" UNIQUE, btree (user_id)
+Foreign-key constraints:
+    "fk_87e64c53a76ed395" FOREIGN KEY (user_id) REFERENCES wallabag_user(id)
+Referenced by:
+    TABLE "wallabag_tagging_rule" CONSTRAINT "fk_2d9b3c5424db0683" FOREIGN KEY (config_id) REFERENCES wallabag_config(id)
+    TABLE "wallabag_ignore_origin_user_rule" CONSTRAINT "fk_config" FOREIGN KEY (config_id) REFERENCES wallabag_config(id)
+Access method: heap
+

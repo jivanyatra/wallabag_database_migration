@@ -1,0 +1,21 @@
+                                                 Table "public.wallabag_oauth2_clients"
+       Column        |          Type          | Collation | Nullable | Default | Storage  | Compression | Stats target |   Description   
+---------------------+------------------------+-----------+----------+---------+----------+-------------+--------------+-----------------
+ id                  | integer                |           | not null |         | plain    |             |              | 
+ random_id           | character varying(255) |           | not null |         | extended |             |              | 
+ redirect_uris       | text                   |           | not null |         | extended |             |              | (DC2Type:array)
+ secret              | character varying(255) |           | not null |         | extended |             |              | 
+ allowed_grant_types | text                   |           | not null |         | extended |             |              | (DC2Type:array)
+ name                | bytea                  |           | not null |         | extended |             |              | 
+ user_id             | integer                |           |          |         | plain    |             |              | 
+Indexes:
+    "wallabag_oauth2_clients_pkey" PRIMARY KEY, btree (id)
+    "idx_635d765ea76ed395" btree (user_id)
+Foreign-key constraints:
+    "fk_635d765ea76ed395" FOREIGN KEY (user_id) REFERENCES wallabag_user(id)
+Referenced by:
+    TABLE "wallabag_oauth2_refresh_tokens" CONSTRAINT "fk_20c9fb2419eb6921" FOREIGN KEY (client_id) REFERENCES wallabag_oauth2_clients(id)
+    TABLE "wallabag_oauth2_access_tokens" CONSTRAINT "fk_368a420919eb6921" FOREIGN KEY (client_id) REFERENCES wallabag_oauth2_clients(id)
+    TABLE "wallabag_oauth2_auth_codes" CONSTRAINT "fk_ee52e3fa19eb6921" FOREIGN KEY (client_id) REFERENCES wallabag_oauth2_clients(id)
+Access method: heap
+

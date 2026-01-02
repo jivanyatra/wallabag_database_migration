@@ -1,0 +1,4 @@
+LOAD DATABASE
+	FROM 	sqlite://../wallabag.sqlite
+	INTO 	postgresql://wallabag:wallapass@localhost:54322/wallabag
+	WITH 	data only, truncate, create no indexes, no foreign keys, quote identifiers, prefetch rows = 100;

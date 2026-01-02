@@ -1,0 +1,11 @@
+                                                Table "public.wallabag_internal_setting"
+ Column  |          Type          | Collation | Nullable |         Default         | Storage  | Compression | Stats target | Description 
+---------+------------------------+-----------+----------+-------------------------+----------+-------------+--------------+-------------
+ name    | character varying(255) |           | not null |                         | extended |             |              | 
+ value   | character varying(255) |           |          | NULL::character varying | extended |             |              | 
+ section | character varying(255) |           |          | NULL::character varying | extended |             |              | 
+Indexes:
+    "wallabag_craue_config_setting_pkey" PRIMARY KEY, btree (name)
+    "uniq_5d9649505e237e06" UNIQUE, btree (name)
+Access method: heap
+

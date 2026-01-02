@@ -1,0 +1,19 @@
+                                                Table "public.wallabag_oauth2_access_tokens"
+   Column   |          Type          | Collation | Nullable |         Default         | Storage  | Compression | Stats target | Description 
+------------+------------------------+-----------+----------+-------------------------+----------+-------------+--------------+-------------
+ id         | integer                |           | not null |                         | plain    |             |              | 
+ client_id  | integer                |           | not null |                         | plain    |             |              | 
+ user_id    | integer                |           |          |                         | plain    |             |              | 
+ token      | character varying(255) |           | not null |                         | extended |             |              | 
+ expires_at | integer                |           |          |                         | plain    |             |              | 
+ scope      | character varying(255) |           |          | NULL::character varying | extended |             |              | 
+Indexes:
+    "wallabag_oauth2_access_tokens_pkey" PRIMARY KEY, btree (id)
+    "idx_368a420919eb6921" btree (client_id)
+    "idx_368a4209a76ed395" btree (user_id)
+    "uniq_368a42095f37a13b" UNIQUE, btree (token)
+Foreign-key constraints:
+    "fk_368a420919eb6921" FOREIGN KEY (client_id) REFERENCES wallabag_oauth2_clients(id)
+    "fk_368a4209a76ed395" FOREIGN KEY (user_id) REFERENCES wallabag_user(id) ON DELETE CASCADE
+Access method: heap
+

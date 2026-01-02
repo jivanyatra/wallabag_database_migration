@@ -1,0 +1,14 @@
+                                                 Table "public.wallabag_tagging_rule"
+  Column   |          Type          | Collation | Nullable | Default | Storage  | Compression | Stats target |      Description       
+-----------+------------------------+-----------+----------+---------+----------+-------------+--------------+------------------------
+ id        | integer                |           | not null |         | plain    |             |              | 
+ config_id | integer                |           |          |         | plain    |             |              | 
+ rule      | character varying(255) |           | not null |         | extended |             |              | 
+ tags      | text                   |           | not null |         | extended |             |              | (DC2Type:simple_array)
+Indexes:
+    "wallabag_tagging_rule_pkey" PRIMARY KEY, btree (id)
+    "idx_2d9b3c5424db0683" btree (config_id)
+Foreign-key constraints:
+    "fk_2d9b3c5424db0683" FOREIGN KEY (config_id) REFERENCES wallabag_config(id)
+Access method: heap
+

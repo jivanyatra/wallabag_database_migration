@@ -1,0 +1,20 @@
+                                                   Table "public.wallabag_annotation"
+   Column   |              Type              | Collation | Nullable | Default | Storage  | Compression | Stats target |   Description   
+------------+--------------------------------+-----------+----------+---------+----------+-------------+--------------+-----------------
+ id         | integer                        |           | not null |         | plain    |             |              | 
+ user_id    | integer                        |           |          |         | plain    |             |              | 
+ entry_id   | integer                        |           |          |         | plain    |             |              | 
+ text       | text                           |           | not null |         | extended |             |              | 
+ created_at | timestamp(0) without time zone |           | not null |         | plain    |             |              | 
+ updated_at | timestamp(0) without time zone |           | not null |         | plain    |             |              | 
+ quote      | text                           |           | not null |         | extended |             |              | 
+ ranges     | text                           |           | not null |         | extended |             |              | (DC2Type:array)
+Indexes:
+    "wallabag_annotation_pkey" PRIMARY KEY, btree (id)
+    "idx_a7aed006a76ed395" btree (user_id)
+    "idx_a7aed006ba364942" btree (entry_id)
+Foreign-key constraints:
+    "fk_a7aed006a76ed395" FOREIGN KEY (user_id) REFERENCES wallabag_user(id)
+    "fk_annotation_entry" FOREIGN KEY (entry_id) REFERENCES wallabag_entry(id) ON DELETE CASCADE
+Access method: heap
+

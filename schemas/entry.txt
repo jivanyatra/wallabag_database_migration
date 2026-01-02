@@ -1,0 +1,48 @@
+                                                                   Table "public.wallabag_entry"
+      Column      |              Type              | Collation | Nullable |              Default              | Storage  | Compression | Stats target | Description 
+------------------+--------------------------------+-----------+----------+-----------------------------------+----------+-------------+--------------+-------------
+ id               | integer                        |           | not null |                                   | plain    |             |              | 
+ user_id          | integer                        |           |          |                                   | plain    |             |              | 
+ title            | text                           |           |          |                                   | extended |             |              | 
+ url              | text                           |           |          |                                   | extended |             |              | 
+ is_archived      | boolean                        |           | not null |                                   | plain    |             |              | 
+ is_starred       | boolean                        |           | not null |                                   | plain    |             |              | 
+ content          | text                           |           |          |                                   | extended |             |              | 
+ created_at       | timestamp(0) without time zone |           | not null |                                   | plain    |             |              | 
+ updated_at       | timestamp(0) without time zone |           | not null |                                   | plain    |             |              | 
+ mimetype         | text                           |           |          |                                   | extended |             |              | 
+ language         | character varying(20)          |           |          |                                   | extended |             |              | 
+ reading_time     | integer                        |           | not null |                                   | plain    |             |              | 
+ domain_name      | text                           |           |          |                                   | extended |             |              | 
+ preview_picture  | text                           |           |          |                                   | extended |             |              | 
+ uid              | character varying(23)          |           |          | NULL::character varying           | extended |             |              | 
+ http_status      | character varying(3)           |           |          | NULL::character varying           | extended |             |              | 
+ published_at     | timestamp(0) without time zone |           |          | NULL::timestamp without time zone | plain    |             |              | 
+ published_by     | text                           |           |          |                                   | extended |             |              | 
+ headers          | text                           |           |          |                                   | extended |             |              | 
+ starred_at       | timestamp(0) without time zone |           |          | NULL::timestamp without time zone | plain    |             |              | 
+ origin_url       | text                           |           |          |                                   | extended |             |              | 
+ archived_at      | timestamp(0) without time zone |           |          | NULL::timestamp without time zone | plain    |             |              | 
+ hashed_url       | text                           |           |          |                                   | extended |             |              | 
+ given_url        | text                           |           |          |                                   | extended |             |              | 
+ hashed_given_url | text                           |           |          |                                   | extended |             |              | 
+Indexes:
+    "wallabag_entry_pkey" PRIMARY KEY, btree (id)
+    "hashed_given_url_user_id" btree (user_id, hashed_given_url)
+    "hashed_url_user_id" btree (user_id, hashed_url)
+    "idx_entry_archived" btree (is_archived)
+    "idx_entry_created_at" btree (created_at)
+    "idx_entry_starred" btree (is_starred)
+    "idx_entry_uid" btree (uid)
+    "idx_f4d18282a76ed395" btree (user_id)
+    "user_archived" btree (user_id, is_archived, archived_at)
+    "user_created" btree (user_id, created_at)
+    "user_language" btree (language, user_id)
+    "user_starred" btree (user_id, is_starred, starred_at)
+Foreign-key constraints:
+    "fk_f4d18282a76ed395" FOREIGN KEY (user_id) REFERENCES wallabag_user(id)
+Referenced by:
+    TABLE "wallabag_annotation" CONSTRAINT "fk_annotation_entry" FOREIGN KEY (entry_id) REFERENCES wallabag_entry(id) ON DELETE CASCADE
+    TABLE "wallabag_entry_tag" CONSTRAINT "fk_entry_tag_entry" FOREIGN KEY (entry_id) REFERENCES wallabag_entry(id) ON DELETE CASCADE
+Access method: heap
+

@@ -1,0 +1,14 @@
+                                    Table "public.wallabag_entry_tag"
+  Column  |  Type   | Collation | Nullable | Default | Storage | Compression | Stats target | Description 
+----------+---------+-----------+----------+---------+---------+-------------+--------------+-------------
+ entry_id | integer |           | not null |         | plain   |             |              | 
+ tag_id   | integer |           | not null |         | plain   |             |              | 
+Indexes:
+    "wallabag_entry_tag_pkey" PRIMARY KEY, btree (entry_id, tag_id)
+    "idx_c9f0dd7cba364942" btree (entry_id)
+    "idx_c9f0dd7cbad26311" btree (tag_id)
+Foreign-key constraints:
+    "fk_entry_tag_entry" FOREIGN KEY (entry_id) REFERENCES wallabag_entry(id) ON DELETE CASCADE
+    "fk_entry_tag_tag" FOREIGN KEY (tag_id) REFERENCES wallabag_tag(id) ON DELETE CASCADE
+Access method: heap
+
