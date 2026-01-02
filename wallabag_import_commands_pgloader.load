@@ -1,4 +1,147 @@
+-- This file lets you load wallabag data from sqlite to postgres
+-- edit the FROM line with the path to your sqlite file (relative to this script)
+-- and the INTO line with the info for your postgresql connection
+-- (which is set to generics)
+-- 
+-- To use this effectively, follow instructions at:
+-- https://github.com/jivanyatra/wallabag_database_migration
+
+
+
 LOAD DATABASE
-	FROM 	sqlite://../wallabag.sqlite
-	INTO 	postgresql://wallabag:wallapass@localhost:54322/wallabag
-	WITH 	data only, truncate, create no indexes, no foreign keys, quote identifiers, prefetch rows = 100;
+    FROM    sqlite://./path/to/wallabag.sqlite
+    INTO    postgresql://username:password@localhost:5432/wallabag
+    WITH    data only, disable triggers, truncate, create no indexes, no foreign keys, quote identifiers, prefetch rows = 100
+
+SET work_mem TO '16MB', maintenance_work_mem TO '64 MB'
+
+EXCLUDING TABLE NAMES LIKE 'migration_versions'
+
+CAST
+    column wallabag_user.id to integer,
+    column wallabag_user.username to varchar,
+    column wallabag_user.username_canonical to varchar,
+    column wallabag_user.email to varchar,
+    column wallabag_user.email_canonical to varchar,
+    column wallabag_user.enabled to boolean,
+    column wallabag_user.salt to varchar,
+    column wallabag_user.password to varchar,
+    column wallabag_user.last_login to "timestamp without time zone",
+    column wallabag_user.confirmation_token to varchar,
+    column wallabag_user.password_requested_at to "timestamp without time zone",
+    column wallabag_user.roles to text,
+    column wallabag_user.name to text,
+    column wallabag_user.created_at to "timestamp without time zone",
+    column wallabag_user.updated_at to "timestamp without time zone",
+    column wallabag_user.authcode to integer,
+    column wallabag_user.emailtwofactor to boolean,
+    column wallabag_user.googleauthenticatorsecret to varchar,
+    column wallabag_user.backupcodes to json,
+
+    column wallabag_tag.id to integer,
+    column wallabag_tag.label to text,
+    column wallabag_tag.slug to varchar,
+
+    column wallabag_tagging_rule.id to integer,
+    column wallabag_tagging_rule.config_id to integer,
+    column wallabag_tagging_rule.rule to varchar,
+    column wallabag_tagging_rule.tags to text,
+
+    column wallabag_entry.id to integer,
+    column wallabag_entry.user_id to integer,
+    column wallabag_entry.title to text,
+    column wallabag_entry.url to text,
+    column wallabag_entry.is_archived to boolean,
+    column wallabag_entry.is_starred to boolean,
+    column wallabag_entry.content to text,
+    column wallabag_entry.created_at to "timestamp without time zone",
+    column wallabag_entry.updated_at to "timestamp without time zone",
+    column wallabag_entry.mimetype to text,
+    column wallabag_entry.language to varchar,
+    column wallabag_entry.reading_time to integer,
+    column wallabag_entry.domain_name to text,
+    column wallabag_entry.preview_picture to text,
+    column wallabag_entry.uid to varchar,
+    column wallabag_entry.http_status to varchar,
+    column wallabag_entry.published_at to "timestamp without time zone",
+    column wallabag_entry.published_by to text,
+    column wallabag_entry.headers to text,
+    column wallabag_entry.starred_at to "timestamp without time zone",
+    column wallabag_entry.origin_url to text,
+    column wallabag_entry.archived_at to "timestamp without time zone",
+    column wallabag_entry.hashed_url to text,
+    column wallabag_entry.given_url to text,
+    column wallabag_entry.hashed_given_url to text,
+
+    column wallabag_entry_tag.entry_id to integer,
+    column wallabag_entry_tag.tag_id to integer,
+
+    column wallabag_annotation.id to integer,
+    column wallabag_annotation.user_id to integer,
+    column wallabag_annotation.entry_id to integer,
+    column wallabag_annotation.text to text,
+    column wallabag_annotation.created_at to "timestamp without time zone",
+    column wallabag_annotation.updated_at to "timestamp without time zone",
+    column wallabag_annotation.quote to text,
+    column wallabag_annotation.ranges to text,
+
+    column wallabag_config.id to integer,
+    column wallabag_config.user_id to integer,
+    column wallabag_config.items_per_page to integer,
+    column wallabag_config.language to varchar,
+    column wallabag_config.feed_token to varchar,
+    column wallabag_config.feed_limit to integer,
+    column wallabag_config.reading_speed to "double precision" using float-to-string,
+    column wallabag_config.pocket_consumer_key to varchar,
+    column wallabag_config.action_mark_as_read to integer,
+    column wallabag_config.list_mode to integer,
+    column wallabag_config.display_thumbnails to integer,
+
+    column wallabag_internal_setting.name to varchar,
+    column wallabag_internal_setting.value to varchar,
+    column wallabag_internal_setting.section to varchar,
+
+    column wallabag_oauth2_access_tokens.id to integer,
+    column wallabag_oauth2_access_tokens.client_id to integer,
+    column wallabag_oauth2_access_tokens.user_id to integer,
+    column wallabag_oauth2_access_tokens.token to varchar,
+    column wallabag_oauth2_access_tokens.expires_at to integer,
+    column wallabag_oauth2_access_tokens.scope to varchar,
+
+    column wallabag_oauth2_clients.id to integer,
+    column wallabag_oauth2_clients.user_id to integer,
+    column wallabag_oauth2_clients.random_id to varchar,
+    column wallabag_oauth2_clients.secret to varchar,
+    column wallabag_oauth2_clients.name to bytea,
+    column wallabag_oauth2_clients.redirect_uris to text,
+    column wallabag_oauth2_clients.allowed_grant_types to text,
+
+    column wallabag_oauth2_refresh_tokens.id to integer,
+    column wallabag_oauth2_refresh_tokens.client_id to integer,
+    column wallabag_oauth2_refresh_tokens.user_id to integer,
+    column wallabag_oauth2_refresh_tokens.token to varchar,
+    column wallabag_oauth2_refresh_tokens.expires_at to integer,
+    column wallabag_oauth2_refresh_tokens.scope to varchar,
+
+    column wallabag_oauth2_auth_codes.id to integer,
+    column wallabag_oauth2_auth_codes.client_id to integer,
+    column wallabag_oauth2_auth_codes.user_id to integer,
+    column wallabag_oauth2_auth_codes.token to varchar,
+    column wallabag_oauth2_auth_codes.redirect_uri to text,
+    column wallabag_oauth2_auth_codes.expires_at to integer,
+    column wallabag_oauth2_auth_codes.scope to varchar,
+
+    column wallabag_site_credential.id to integer,
+    column wallabag_site_credential.user_id to integer,
+    column wallabag_site_credential.host to varchar,
+    column wallabag_site_credential.username to text,
+    column wallabag_site_credential.password to text,
+    column wallabag_site_credential.createdat to "timestamp without time zone",
+    column wallabag_site_credential.updated_at to "timestamp without time zone",
+
+    column wallabag_ignore_origin_user_rule.id to integer,
+    column wallabag_ignore_origin_user_rule.config_id to integer,
+    column wallabag_ignore_origin_user_rule.rule to varchar,
+
+    column wallabag_ignore_origin_instance_rule.id to integer,
+    column wallabag_ignore_origin_instance_rule.rule to varchar;
