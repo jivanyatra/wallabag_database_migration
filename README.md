@@ -1,5 +1,9 @@
 # Migrating a Wallabag SQLite Database to Something Else.
 
+My journey to migrate my Wallabag db because it was too big to dump and load in as text/csv, and I didn't want to refetch the contents for various reasons.
+
+If anyone wants to take this and create a UI to make it easy for less technical folks to migrate, feel free.
+
 ## "Shut up and just give me the commands and SQL"
 
 This is targeted for and tested in Postgres. It should be easily adapted for MySQL/Maria, but I don't know if it's even needed there.

@@ -14,8 +14,14 @@ docker exec -it wallabag bin/console wallabag:install --env=prod --no-interactio
 # take wallabag down and fix perms on data
 docker compose down wallabag
 sudo chown -R nobody:nogroup wallabag_data/
+docker compose up -d wallabag
+docker exec -it wallabag bin/console doctrine:migrations:migrate --env=prod --no-interaction
+docker compose down wallabag
+
+# edit sqlite columns to match postgres names
+# 
 # run import
-pgloader --with "prefetch rows = 100" --dynamic-space-size 1000 old_data/wallabag.sqlite postgres://wallabag:wallapass@localhost:54322/wallabag
+# pgloader path/to/wallabag_import_commands_pgloader.load
 
 # drop into psql for testing/troubleshooting
 # psql -h localhost -p 54322 --user wallabag
